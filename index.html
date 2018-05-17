@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="main.css"/>
+		<script type="text/javascript">
+
+		//Global Variables
+		var painted;
+		var content;
+		var winningCombinations;
+		var turn = 0;
+		var thediv;
+		var c;
+		var cxt;
+		var squaresFilled = 0;
+		var w;
+		var y;
+
+		//Instanciate Arrays
+		window.onload=function(){
+			
+			painted = new Array();
+			content = new Array();
+			winningCombinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+			for(var l = 0; l <= 8; l++){
+			painted[l] = false;
+			content[l]='';
+			}
+		}
+
+		//Game methods
+		function divClicked(divNumber){
+			thediv = "div"+divNumber;
+			c = document.getElementById(thediv);
+			cxt = c.getContext("2d");
+
+			if(painted[divNumber-1] ==false){
+				if(turn%2==0){
+					cxt.beginPath();
+					cxt.moveTo(10,10);
+					cxt.lineTo(40,40);
+					cxt.moveTo(40,10);
+					cxt.lineTo(10,40);
+					cxt.stroke();
+					cxt.closePath();
+					content[divNumber-1] = 'X';
+				}
+
+				else{
+					cxt.beginPath();
+					cxt.arc(25,25,20,0,Math.PI*2,true);
+					cxt.stroke();
+					cxt.closePath();
+					content[divNumber-1] = 'O';
+				}
+
+				turn++;
+				painted[divNumber-1] = true;
+				squaresFilled++;
+				checkForWinners(content[divNumber-1]);
+
+				if(squaresFilled==9){
+					alert("THE GAME IS OVER!");
+					location.reload(true);
+				}
+			
+			}
+			else{
+				alert("THAT SPACE IS ALREADY OCCUPIED WITH YOUR HEART!");
+			}
+
+		}
+
+		function checkForWinners(symbol){
+			
+			for(var a = 0; a < winningCombinations.length; a++){
+			if(content[winningCombinations[a][0]]==symbol&&content[winningCombinations[a][1]]==	symbol&&content[winningCombinations[a][2]]==symbol){
+				alert(symbol+ " WON!");
+				playAgain();
+			}
+			}
+
+		}
+
+		function playAgain(){
+			y=confirm("PLAY AGAIN?");
+			if(y==true){
+				alert("OKAY! ^^/>");
+				location.reload(true);
+			}
+			else{
+				alert("SO LONG,SUCKER!");
+		}
+
+		}
+
+
+		</script>
+	</head>
+	<body>
+		<div class = "main-container">
+			<div class = "header">
+				<h1>Tic Tac Toe</h1>
+				<img id="restart-button" src = "restart.png" width="50px" height="50px" onclick="restart()">
+			</div>
+			<div id ="box">
+				<div id = "div1" onclick="divClicked(1)"></div>
+				<div id = "div2" onclick="divClicked(2)"></div>
+				<div id = "div3" onclick="divClicked(3)"></div>
+				<div id = "div4" onclick="divClicked(4)"></div>
+				<div id = "div5" onclick="divClicked(5)"></div>
+				<div id = "div6" onclick="divClicked(6)"></div>
+				<div id = "div7" onclick="divClicked(7)"></div>
+				<div id = "div8" onclick="divClicked(8)"></div>
+				<div id = "div9" onclick="divClicked(9)"></div>
+			</div>
+			<div class = "status">
+
+			</div>
+		</div>
+		<script src = "app.js"></script>    
+	</body>
+</html>
+
